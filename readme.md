@@ -11,7 +11,7 @@ In carrying out this experiment and answering the above question I will utilise 
 Programmed in R, this is where I do analysis on the results generated. Licensed under the GNU GPLv3+.
 
 ### Bot
-This is bot and module which will communicate with the Omegle users. It is written in Python 3 and based on an older module called [py-omegle](https://code.google.com/p/py-omegle/). As such, this is licensed under the MIT license.
+This is bot and module which will communicate with the Omegle users. It is written in Python and based on an older module called [py-omegle](https://code.google.com/p/py-omegle/). As such, this is licensed under the MIT license.
 
 ### Paper
 I have written up my findings in the markup language LaTeX. This license for this part of the project is still undecided.

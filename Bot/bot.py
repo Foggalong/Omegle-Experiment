@@ -1,34 +1,55 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
+
+# This is a Omegle-bot which is used as a POC for using Omegle as a subject
+# source for social experiments. The bot asks users a question at random from
+# a predefined list and logs their reply, whatever it may be, to a data file.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 
 import omegle
+from time import sleep
+from random import randint
+
+phrases = [
+    "Pick a number between 1 and 100",
+    "Pick a number between 100 and 1"
+    ]
+
 
 class MyEventHandler(omegle.EventHandler):
-   def connected(self,chat,var):
-      print("Connected")
-      chat.say("Hello! I am a python bot! Who are you?")
+    def connected(self, chat, var):
+        print "Connected"
+        x = randint(0, len(phrases) - 1)
+        chat.say(phrases[x])
+        with open("output.dat", "a") as myfile:
+            myfile.write("phrase" + str(x) + "\n")
 
-   def gotMessage(self,chat,message):
-      message = message[0]
-      print("Message recieved:", message)          
+    def gotMessage(self, chat, message):
+        message = message[0]
+        print "Message recieved: " + message
+        with open("output.dat", "a") as myfile:
+            myfile.write(message + "\n")
 
-   def typing(self,chat,var):
-      print("Stranger is typing...")
+    def typing(self, chat, var):
+        print "Stranger is typing..."
 
-   def stoppedTyping(self,chat,var):
-      print("Stranger stopped typing!")
+    def stoppedTyping(self, chat, var):
+        print "Stranger stopped typing!"
 
-   def strangerDisconnected(self,chat,var):
-      print("Stranger disconnected - Terminating")
-      chat.terminate()
+    def strangerDisconnected(self, chat, var):
+        print "Stranger disconnected - Terminating"
+        chat.terminate()
 
-# Lets make two chats
-
-chat = omegle.OmegleChat()
-chat.connect_events(MyEventHandler())
-chat.connect(threaded=True)
-
-chat2 = omegle.OmegleChat()
-chat2.connect_events(MyEventHandler())
-chat2.connect(threaded=True)
-
-raw_input()
+while True:
+    chat = omegle.OmegleChat()
+    chat.connect_events(MyEventHandler())
+    chat.connect(threaded=True)
+    # Makes sure chat times out
+    sleep(10)
+    chat.terminate()

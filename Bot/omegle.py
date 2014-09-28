@@ -1,17 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 
-# py-omelge provides a class to interface with the site Omegle. The class uses
-# a simple event-callback interface and enables you to do everything the omegle
-# browser client can do. You can run concurrent chats - each one is threaded.
-
-# This is a modified version of py-omelge, for use specifically with the Omegle
-# social experiment. Key modifications include:
-
-#   * Bug Fixes
-#   * PEP 8 compliance
-#   * Port to Python 3
-
-# Copyright (c) 2014 Bobng/Nigg/Lobe/etc & Joshua Fogg
+# This is a slightly modified version of the py-omegle module, credited as
+# being coded by 'Bobng/Nigg/Lobe/etc'. Modifications made by Joshua Fogg,
+# and include PEP8 compliance and bug fixes.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,8 +13,7 @@
 # THE SOFTWARE.
 
 import urllib
-import urllib.request
-import urllib.error
+import urllib2
 import thread
 import simplejson
 import cookielib
@@ -54,9 +44,9 @@ class OmegleChat:
         self.debug = debug
 
         jar = cookielib.CookieJar()
-        processor = urllib.request.HTTPCookieProcessor(jar)
-        self.connector = urllib.request.build_opener(processor)
-        # , urllib.request.HTTPHandler(debuglevel=1))
+        processor = urllib2.HTTPCookieProcessor(jar)
+        self.connector = urllib2.build_opener(processor)
+        # ,urllib2.HTTPHandler(debuglevel=1))
         self.connector.addheaders = [
             ('User-agent', user_agent)
             ]
@@ -70,8 +60,7 @@ class OmegleChat:
 
     def get_events(self, json=False):
         '''Poll the /events/ page and process the response'''
-        # requester = urllib.request.Request(self.url + 'events',
-        #                             headers={'id':self.id})
+        # requester = urllib2.Request(self.url+'events',headers={'id':self.id})
         dataURL = urllib.urlencode({'id': self.id})
         events = self.connector.open(self.url+'events', data=dataURL).read()
         if json:
@@ -102,13 +91,13 @@ class OmegleChat:
         if r != "win":
             # Maybe make it except here?
             if self.debug:
-                print('Page {0} returned {1}'.format(page, r))
+                print 'Page %s returned %s' % (page, r)
         return r
 
     def say(self, message):
         '''Send a message from the chat'''
         if self.debug:
-            print('Saying message:', message)
+            print 'Saying message: %s' % message
         self.open_page('send', {'msg': message})
 
     def disconnect(self):
@@ -127,7 +116,7 @@ class OmegleChat:
     def connect(self, threaded=True):
         '''Start a chat session'''
         if not self.id:
-            self.id = self.connector.open(self.url + 'start', data="") # {}
+            self.id = self.connector.open(self.url+'start', data="") # {}
             self.id = self.id.read().strip('"')
 
         self.connected = True
@@ -147,14 +136,14 @@ class OmegleChat:
         while True:
             if self.terminated:
                 if self.debug:
-                    print("Thread terminating")
+                    print "Thread terminating"
                 return
 
             events = self.get_events(json=True)
             if not events:
                 continue
             if self.debug:
-                print(events)
+                print events
             for event in events:
                 if len(event) > 1:
                     self.fire(event[0], event[1:])
@@ -165,28 +154,28 @@ if __name__ == '__main__':
 
     class MyEventHandler(EventHandler):
         def connected(self, chat, var):
-            print("Connected")
+            print "Connected"
             chat.in_chat = True
             chat.say("Hello!")
 
         def gotMessage(self, chat, message):
             message = message[0]
-            print("Message recieved:", message)
+            print "Message recieved: " + message
 
         def typing(self, chat, var):
-            print("Stranger is typing...")
+            print "Stranger is typing..."
 
         def stoppedTyping(self, chat, var):
-            print("Stranger stopped typing!")
+            print "Stranger stopped typing!"
 
         def strangerDisconnected(self, chat, var):
-            print("Stranger disconnected - Terminating")
+            print "Stranger disconnected - Terminating"
             chat.terminate()
 
-    for i in xrange(2):
+    for i in range(2):
         print("Starting chat", i)
         a = OmegleChat()
         a.connect_events(MyEventHandler())
         a.connect(True)
         a.waitForTerminate()
-    raw_input()
+    input()

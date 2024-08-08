@@ -1,16 +1,10 @@
 #!/usr/bin/env python2
 
-# This is a slightly modified version of the py-omegle module, credited as
-# being coded by 'Bobng/Nigg/Lobe/etc'. Modifications made by Joshua Fogg,
-# and include PEP8 compliance and bug fixes.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# Interface to communicate with Omegle in Python 2. This is a slightly modified
+# version of the 'py-omegle' module, credited as coded by 'Bobng/Nigg/Lobe/etc'
+# and archived here: https://code.google.com/archive/p/py-omegle. Modifications
+# by Josh Fogg include PEP8 compliance and bug fixes. Both this and the original
+# are released under the MIT license.
 
 import urllib
 import urllib2

@@ -1,34 +1,38 @@
 #!/usr/bin/env R
 
-# This R program analyses the data as part of the Omegle experiment. It
-# plots two bar graphs of the frequency of numbers piced, sorted by #.
-# Copyright (C) 2014  Joshua Fogg
+# R code for analysing data from the example Omegle experiment. After
+# loading the data and plots a butterfly chart to compare frequencies
+# of the numbers picked for the different phrases.
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+load.dat <- function(filename) {
+     # load data in the appropriate format and convert to frequency table
+     freqs = table(read.table(file=filename, header=F, fill=T))
+     # pre-allocate output array so null values also counted 
+     output = rep(0, 100)
+     # populate output array with non-zero frequencies 
+     output[as.numeric(names(freqs))] = as.vector(freqs)
+     return(output)
+}
 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+png("output.png", width=15, height=10, units="cm", res=800)
+colors = c("lightblue", "pink")  # save colours for repeated use
+barplot(
+     load.dat("phrase0.dat"),
+     ylim = c(-60,60),  # including negative axis reserves space for next
+     col = colors[1], border = colors[1],
+     xlab = "Number (invalid choices excluded)", ylab = "Frequency",
+     main = "Frequency of Chosen Number by Phrasing"
+)
+par(new = TRUE)
+barplot(
+     load.dat("phrase1.dat"),
+     ylim = c(60,-60),  # reversed order flips the data into negative axis
+     col = colors[2], border = colors[2],
+     axes = FALSE, xlab = "", ylab = "", main = ""  # don't redraw  
+)
+grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
+legend(c("Phrase 0", "Phrase 1"), x="topright", col=colors, lwd=10)
+# need to add an x-axis manually; 100 data points across 120 ticks
+axis(side = 1, c(1, seq(12,120,12)), c(1, seq(10, 100, 10)))
 
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-# PDF for data output
-pdf("output.pdf", width=6, height=10)
-attach(mtcars)
-par(mfrow=c(2,1))
-
-# Phrase 0
-data_file = read.table(file="phrase0.dat", header=F, fill=T)
-data = table(c(data_file$V1))
-barplot(data, main="Phrase 0")
-
-# Phrase 1
-data_file = read.table(file="phrase1.dat", header=F, fill=T)
-data = table(c(data_file$V1))
-barplot(data, main="Phrase 1")
-
+dev.off()

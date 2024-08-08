@@ -31,7 +31,7 @@ barplot(
      axes = FALSE, xlab = "", ylab = "", main = ""  # don't redraw  
 )
 grid(nx = NA, ny = NULL, lty = 2, col = "gray", lwd = 1)
-legend(c("Phrase 0", "Phrase 1"), x="topright", col=colors, lwd=10)
+legend(c("Phrase 1", "Phrase 2"), x="topright", col=colors, lwd=10)
 # need to add an x-axis manually; 100 data points across 120 ticks
 axis(side = 1, c(1, seq(12,120,12)), c(1, seq(10, 100, 10)))
 

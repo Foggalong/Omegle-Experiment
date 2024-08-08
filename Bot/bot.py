@@ -1,16 +1,8 @@
 #!/usr/bin/env python2
 
-# This is a Omegle-bot which is used as a POC for using Omegle as a subject
+# This is a bot which is used as a proof of concept for using Omegle as a data
 # source for social experiments. The bot asks users a question at random from
 # a predefined list and logs their reply, whatever it may be, to a data file.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
 
 import omegle
 from time import sleep
@@ -19,7 +11,7 @@ from random import randint
 phrases = [
     "Pick a number between 1 and 100",
     "Pick a number between 100 and 1"
-    ]
+]
 
 
 class MyEventHandler(omegle.EventHandler):
